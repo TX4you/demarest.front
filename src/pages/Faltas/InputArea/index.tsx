@@ -11,10 +11,10 @@ type Props = {
     curso: CursosModel;
 }
 
+const initialAlunosFaltasModel: AlunosFaltasModel = { alunosId: '', cursosId: ''}
+
 export const InputArea = ({ onAdd, aluno, curso }: Props) => {
-          
-    const formData: AlunosFaltasModel = { alunosId: "", cursosId: ""}
-    const [faltas, setFaltas] = useState<AlunosFaltasModel>(formData);
+          const [faltas, setFaltas] = useState(initialAlunosFaltasModel);
     
     const selectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const { name, value } = event.target

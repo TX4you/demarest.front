@@ -10,10 +10,10 @@ type Props = {
     aluno: AlunosModel;
     cursos: CursosModel[];
 }
+const initialMatriculasModel: MatriculasModel = { alunosId: '', cursosId: '' }
 
 export const InputArea = ({ onAdd, aluno, cursos }: Props) => {
-    const formData: MatriculasModel = { alunosId: "", cursosId: "" }
-    const [matriculas, setMatriculas] = useState<MatriculasModel>(formData);
+    const [matriculas, setMatriculas] = useState(initialMatriculasModel);
    
     const selectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const { name, value } = event.target
@@ -60,7 +60,7 @@ export const InputArea = ({ onAdd, aluno, cursos }: Props) => {
 
             if (valido) {
                 onAdd(newMatricula);
-                setMatriculas({ alunosId: "" , cursosId: ""});
+                setMatriculas(initialMatriculasModel);
             }
             else {
                 alert(msg);
@@ -72,13 +72,13 @@ export const InputArea = ({ onAdd, aluno, cursos }: Props) => {
         <C.Container>
             <C.H1>Matrículas</C.H1>
             <C.form method="POST" onSubmit={handleSendData}>
-                <C.Select id="nome" name="nome" tamanho={150} onChange={selectChange}>
+                <C.Select id="nome" name="nome" tamanho={150} value={aluno.nome}  onChange={selectChange}>
                     <option key={aluno.id} value={aluno.id}>
                         {aluno.nome}
                     </option>
                 </C.Select>
 
-                <C.Select id="descricao" name="cursosId" tamanho={200} onChange={selectChange}>
+                <C.Select id="descricao" name="cursosId" value={matriculas.cursosId} tamanho={200} onChange={selectChange}>
                     <option key="0" value="0">
                         Selecione um curso
                     </option>

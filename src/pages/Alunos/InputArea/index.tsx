@@ -5,10 +5,10 @@ import * as C from "./styles";
 type Props = {
     onAdd: (aluno: AlunosModel) => void;
 }
+const initialAlunosModel: AlunosModel = { nome: '', sobreNome: '', cpf: '', sexo: '' }
 
 export const InputArea = ({ onAdd }: Props) => {
-    const formData: AlunosModel = { nome: "", sobreNome: "", cpf: "", sexo: "" }
-    const [aluno, setaluno] = useState<AlunosModel>(formData);
+    const [aluno, setaluno] = useState(initialAlunosModel);
 
     const inputChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target
@@ -22,16 +22,38 @@ export const InputArea = ({ onAdd }: Props) => {
 
     const handleSendData = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        let msg = "";
+        let valido = true;
+
+        if(aluno.nome ===""){
+            valido = false;
+            msg = "Nome do Aluno";
+        }
+        if(aluno.sobreNome ===""){
+            valido = false;
+            msg = "sobreNome do Aluno";
+        }
+        if(aluno.cpf ===""){
+            valido = false;
+            msg = "cpf do Aluno";
+        }
+        if(aluno.sexo ===""){
+            valido = false;
+            msg = "sexo do Aluno";
+        }
         let newAluno: AlunosModel = {
             nome: aluno.nome,
             sobreNome: aluno.sobreNome,
             cpf: aluno.cpf,
             sexo: aluno.sexo
         };
-        onAdd(newAluno);
-
-        if (true) {
-            setaluno({ nome: "", sobreNome: "", cpf: "", sexo: "" });
+       
+        if (valido) {
+            onAdd(newAluno);
+            setaluno(initialAlunosModel);
+        }
+        else {
+            alert(msg);
         }
     }
 

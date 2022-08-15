@@ -12,31 +12,26 @@ import { AlunosModel } from "../../types/AlunosModel";
 import { MatriculasModel } from "../../types/MatriculasModel";
 import { AlunosFaltasModel } from "../../types/AlunosFaltasModel";
 
+const initialMatriculasModel: MatriculasModel = { alunosId: '', cursosId: '' }
+const initialAlunosModel: AlunosModel = { nome: '', sobreNome: '', cpf: '', sexo: '' }
+const initialCursosModel: CursosModel = { id: '', descricao: '', exclusivo: '', avaliacoes: '', frequenciaMinima: '', quantidadeAulas: '' }
+
 export const Faltas = () => {
     const params = useParams();
-    const formDataMatricula: MatriculasModel = { alunosId: "", cursosId: "" }
-    const formDataAluno: AlunosModel = { nome: "", sobreNome: "", cpf: "", sexo: "" }
-    const formDataCursos: CursosModel = { id: "", descricao: "", exclusivo: "", avaliacoes: "", frequenciaMinima: "", quantidadeAulas: "" }
-
-    const [matricula, setMatricula] = useState<MatriculasModel>(formDataMatricula);
-    const [aluno, setaluno] = useState<AlunosModel>(formDataAluno);
-    const [curso, setCurso] = useState<CursosModel>(formDataCursos);
+    const [matricula, setMatricula] = useState<MatriculasModel>(initialMatriculasModel);
+    const [aluno, setaluno] = useState<AlunosModel>(initialAlunosModel);
+    const [curso, setCurso] = useState<CursosModel>(initialCursosModel);
     const [listFaltas, setlistFaltas] = useState<AlunosFaltasModel[]>([]);
 
     const getMatricula = async (id: any) => {
         try {
-            const response = await axios.get<MatriculasModel>("/api/v1/AlunosCursos/" + id);
-            const newMatricula: MatriculasModel = response.data;
-
-            if(newMatricula !== undefined)
-            {
-                setMatricula(newMatricula);
-                getAluno(newMatricula.alunosId);
-                getCurso(newMatricula.cursosId);
-                getFaltas(newMatricula.alunosId, newMatricula.cursosId);
-            }
-
-
+             await axios.get<MatriculasModel>("/api/v1/AlunosCursos/" + id)
+            .then(matricula =>{
+                setMatricula(matricula.data);
+                getAluno(matricula.data.alunosId);
+                getCurso(matricula.data.cursosId);
+                getFaltas(matricula.data.alunosId, matricula.data.cursosId);
+            });
         } catch (error) {
             console.log(error);
             return error;
@@ -45,10 +40,8 @@ export const Faltas = () => {
 
     const getAluno = async (id: any) => {
         try {
-            const response = await axios.get<AlunosModel>("/api/v1/Alunos/" + id);
-            const newAluno: AlunosModel = response.data;
-            setaluno(newAluno);
-
+           await axios.get<AlunosModel>("/api/v1/Alunos/" + id)
+            .then(aluno => setaluno(aluno.data));
         } catch (error) {
             console.log(error);
             return error;
@@ -57,10 +50,8 @@ export const Faltas = () => {
 
     const getCurso = async (cursosId: any) => {
         try {
-            const response = await axios.get<CursosModel>("/api/v1/Cursos/" + cursosId);
-            const newCurso: CursosModel = response.data;
-            setCurso(newCurso);
-
+            await axios.get<CursosModel>("/api/v1/Cursos/" + cursosId)
+            .then(curso => setCurso(curso.data));
         } catch (error) {
             console.log(error);
             return error;
@@ -69,10 +60,8 @@ export const Faltas = () => {
 
     const getFaltas = async (AlunosId: any, CursosId: any) => {
         try {
-            const response =  await axios.get<AlunosFaltasModel[]>("/api/v1/AlunosFaltas/GetByAlunoIdCursoId/" + AlunosId +"/" + CursosId);
-            const newlistFaltas: AlunosFaltasModel[] = response.data;
-            setlistFaltas(newlistFaltas);
-
+              await axios.get<AlunosFaltasModel[]>("/api/v1/AlunosFaltas/GetByAlunoIdCursoId/" + AlunosId +"/" + CursosId)
+            .then(faltas => setlistFaltas(faltas.data));
         } catch (error) {
             console.log(error);
             return error;

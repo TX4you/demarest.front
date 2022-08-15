@@ -6,15 +6,10 @@ type Props = {
     onAdd: (curso: CursosModel) => void;
     cursosCadastrados: CursosModel[];
 }
+const initialCursosModel: CursosModel = { descricao: '', exclusivo: '', avaliacoes: '', frequenciaMinima: '', quantidadeAulas: '' }
 
 export const InputArea = ({ onAdd, cursosCadastrados }: Props) => {
-    const formData: CursosModel = { descricao: "", exclusivo: "", avaliacoes: "", frequenciaMinima: "", quantidadeAulas: "" }
-    const [curso, setCurso] = useState<CursosModel>(formData);
-
-    const inputChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = event.target
-        setCurso({ ...curso, [name]: value })
-    }
+    const [curso, setCurso] = useState(initialCursosModel);
 
     const selectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const { name, value } = event.target
@@ -64,7 +59,7 @@ export const InputArea = ({ onAdd, cursosCadastrados }: Props) => {
 
         if (valido) {
             onAdd(newcurso);
-            setCurso({ descricao: "", exclusivo: "", avaliacoes: "", frequenciaMinima: "", quantidadeAulas: "" });
+            setCurso(initialCursosModel);
         }
         else {
             alert(msg);
@@ -78,6 +73,7 @@ export const InputArea = ({ onAdd, cursosCadastrados }: Props) => {
         { value: 'Espanhol', text: 'Espanhol' },
         { value: 'Francês', text: 'Francês' },
         { value: 'Alemão', text: 'Alemão' },
+        { value: 'Arabe', text: 'Arabe' },
     ];
 
     const optionAvaliacoes = [
@@ -108,35 +104,35 @@ export const InputArea = ({ onAdd, cursosCadastrados }: Props) => {
         <C.Container>
             <C.H1>cursos</C.H1>
             <C.form method="POST" onSubmit={handleSendData}>
-                <C.Select id="descricao" name="descricao" tamanho={150} onChange={selectChange}>
+                <C.Select id="descricao" name="descricao" value={curso.descricao} tamanho={150} onChange={selectChange}>
                     {optionDescricao.map(option => (
                         <option key={option.value} value={option.value}>
                             {option.text}
                         </option>
                     ))}
                 </C.Select>
-                <C.Select id="avaliacoes" name="avaliacoes" tamanho={150} onChange={selectChange}>
+                <C.Select id="avaliacoes" name="avaliacoes" value={curso.avaliacoes} tamanho={150} onChange={selectChange}>
                     {optionAvaliacoes.map(option => (
                         <option key={option.value} value={option.value}>
                             {option.text}
                         </option>
                     ))}
                 </C.Select>
-                <C.Select id="frequenciaMinima" name="frequenciaMinima" tamanho={200} onChange={selectChange}>
+                <C.Select id="frequenciaMinima" name="frequenciaMinima" value={curso.frequenciaMinima} tamanho={200} onChange={selectChange}>
                     {optionFrequenciaMinima.map(option => (
                         <option key={option.value} value={option.value}>
                             {option.text}
                         </option>
                     ))}
                 </C.Select>
-                <C.Select id="quantidadeAulas" name="quantidadeAulas" tamanho={200} onChange={selectChange}>
+                <C.Select id="quantidadeAulas" name="quantidadeAulas" value={curso.quantidadeAulas} tamanho={200} onChange={selectChange}>
                     {optionQuantidadeAulas.map(option => (
                         <option key={option.value} value={option.value}>
                             {option.text}
                         </option>
                     ))}
                 </C.Select>
-                <C.Select id="exclusivo" name="exclusivo" tamanho={200} onChange={selectChange}>
+                <C.Select id="exclusivo" name="exclusivo" value={curso.exclusivo} tamanho={200} onChange={selectChange}>
                     {options.map(option => (
                         <option key={option.value} value={option.value}>
                             {option.text}

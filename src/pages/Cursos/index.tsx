@@ -13,9 +13,7 @@ export const Cursos = () => {
 
     const getCursosAll = async () => {
         try {
-            const response = await axios.get<CursosModel[]>("/api/v1/Cursos");
-            const newlistCursos: CursosModel[] = response.data;
-            setlistCursos(newlistCursos);
+            await axios.get<CursosModel[]>("/api/v1/Cursos").then(cursos =>  setlistCursos(cursos.data))
         } catch (error) {
             console.log(error);
             return error;
@@ -33,7 +31,6 @@ export const Cursos = () => {
     const addCursos = async (curso: CursosModel) => {
         try {
             let data = JSON.stringify(curso);
-            console.log(data);
             await axios.post<CursosModel[]>("/api/v1/Cursos", data);
 
             getCursosAll();
@@ -48,7 +45,6 @@ export const Cursos = () => {
             <C.Header>
                 <C.HeaderInfo>Escola de idiomas</C.HeaderInfo>
             </C.Header>
-
             <C.Body>
                 <MenuArea />
                 <InputArea onAdd={handleAdd} cursosCadastrados={listCursos}/>

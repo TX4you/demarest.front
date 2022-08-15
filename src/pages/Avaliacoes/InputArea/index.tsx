@@ -11,10 +11,10 @@ type Props = {
     curso: CursosModel;
 }
 
+const initialCursosAvaliacoesModel: CursosAvaliacoesModel = { alunosId: '', cursosId: '', nota: '' }
+
 export const InputArea = ({ onAdd, aluno, curso }: Props) => {
-          
-    const formData: CursosAvaliacoesModel = { alunosId: "", cursosId: "", nota: "" }
-    const [avaliacao, setAvaliacao] = useState<CursosAvaliacoesModel>(formData);
+    const [avaliacao, setAvaliacao] = useState<CursosAvaliacoesModel>(initialCursosAvaliacoesModel);
     
     const selectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const { name, value } = event.target
@@ -43,7 +43,6 @@ export const InputArea = ({ onAdd, aluno, curso }: Props) => {
         { value: 9.5, text: 9.5 },
         { value: 10, text: 10 },
     ];
-
    
     const handleSendData = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();

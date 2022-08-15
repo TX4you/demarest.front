@@ -11,20 +11,20 @@ import { CursosModel } from "../../types/CursosModel";
 import { AlunosModel } from "../../types/AlunosModel";
 import { MatriculasModel } from "../../types/MatriculasModel";
 
-export const Matriculas = () => {
-    const formDataAluno: AlunosModel = { nome: "", sobreNome: "", cpf: "", sexo: "" }
-    const formDataCursos: CursosModel[] = [{ id: "", descricao: "", exclusivo: "", avaliacoes: "", frequenciaMinima: "", quantidadeAulas: "" }]
+const initialAlunosModel: AlunosModel = { nome: '', sobreNome: '', cpf: '', sexo: '' }
+const initialCursosModel: CursosModel[] = [{ id: '', descricao: '', exclusivo: '', avaliacoes: '', frequenciaMinima: '', quantidadeAulas: '' }]
 
-    const [aluno, setaluno] = useState<AlunosModel>(formDataAluno);
-    const [listCursos, setlistCursos] = useState<CursosModel[]>(formDataCursos);
-    const [listCursosAluno, setlistCursosAluno] = useState<CursosModel[]>(formDataCursos);
+
+export const Matriculas = () => {
+    const [aluno, setaluno] = useState(initialAlunosModel);
+    const [listCursos, setlistCursos] = useState(initialCursosModel);
+    const [listCursosAluno, setlistCursosAluno] = useState(initialCursosModel);
+
     const params = useParams();
 
     const getCursosAll = async () => {
         try {
-            const response = await axios.get<CursosModel[]>("/api/v1/Cursos");
-            const newlistCursos: CursosModel[] = response.data;
-            setlistCursos(newlistCursos);
+            await axios.get<CursosModel[]>("/api/v1/Cursos").then(cursos => setlistCursos(cursos.data))
         } catch (error) {
             console.log(error);
             return error;
@@ -33,10 +33,8 @@ export const Matriculas = () => {
 
     const getCursosAluno = async (alunoId: any) => {
         try {
-            const response = await axios.get<CursosModel[]>("/api/v1/Cursos/GetByAlunoId/" + alunoId);
-            const newlistCursos: CursosModel[] = response.data;
-            setlistCursosAluno(newlistCursos);
-
+            await axios.get<CursosModel[]>("/api/v1/Cursos/GetByAlunoId/" + alunoId)
+                .then(cursosAluno => setlistCursosAluno(cursosAluno.data))
         } catch (error) {
             console.log(error);
             return error;
@@ -45,10 +43,8 @@ export const Matriculas = () => {
 
     const getAluno = async (id: any) => {
         try {
-            const response = await axios.get<AlunosModel>("/api/v1/Alunos/" + id);
-            const newlistAluno: AlunosModel = response.data;
-            setaluno(newlistAluno);
-
+            await axios.get<AlunosModel>("/api/v1/Alunos/" + id)
+                .then(aluno => setaluno(aluno.data))
         } catch (error) {
             console.log(error);
             return error;
@@ -62,7 +58,6 @@ export const Matriculas = () => {
     }, []);
 
     const handleAdd = (matricula: MatriculasModel) => {
-      
         addMatriculas(matricula);
     }
 
@@ -87,7 +82,7 @@ export const Matriculas = () => {
             <C.Body>
                 <MenuArea />
                 <InputArea onAdd={handleAdd} aluno={aluno} cursos={listCursos} />
-                <TableArea cursos={listCursosAluno} aluno={aluno}/>
+                <TableArea cursos={listCursosAluno} aluno={aluno} />
             </C.Body>
         </C.Container>
     );

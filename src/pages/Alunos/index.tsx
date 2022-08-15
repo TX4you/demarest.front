@@ -14,7 +14,6 @@ export const Alunos = () => {
     const getAlunosAll = async () => {
         try {
             const response = await axios.get<AlunosModel[]>("/api/v1/Alunos");
-
             const newlistAlunos: AlunosModel[] = response.data;
            
             setListAlunos(newlistAlunos);
@@ -27,7 +26,6 @@ export const Alunos = () => {
     useEffect(() => {
         getAlunosAll();
       }, []);
-
     
     const handleAdd = (aluno: AlunosModel) => {
         addAlunos(aluno);

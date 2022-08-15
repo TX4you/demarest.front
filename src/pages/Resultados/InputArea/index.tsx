@@ -7,9 +7,10 @@ type Props = {
     aluno: AlunosModel[];
 }
 
+const initialAlunosModel: AlunosModel = {id:'', nome: '', sobreNome: '', cpf: '', sexo: '' }
+
 export const InputArea = ({ onSelect, aluno }: Props) => {
-    const formData: AlunosModel = {id:"",nome:"",sobreNome:"",cpf:"",sexo:""}
-    const [alunoSelect, setAlunoSelect] = useState<AlunosModel>(formData);
+    const [alunoSelect, setAlunoSelect] = useState(initialAlunosModel);
     
     const selectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const { name, value } = event.target

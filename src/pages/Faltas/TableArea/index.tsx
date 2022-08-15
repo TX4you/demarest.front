@@ -20,8 +20,8 @@ export const TableArea = ({ faltas }: Props) => {
                  faltas.map((item, index) => (
                     <C.TableLine key={index}>
                         <C.TableColumn>{item.id}</C.TableColumn>
-                        <C.TableColumn>{item.alunosId}</C.TableColumn>
-                        <C.TableColumn>{item.cursosId}</C.TableColumn>
+                        <C.TableColumn>{item.aluno?.nome}</C.TableColumn>
+                        <C.TableColumn>{item.curso?.descricao}</C.TableColumn>
                     </C.TableLine>
                 ))
             }

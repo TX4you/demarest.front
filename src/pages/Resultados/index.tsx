@@ -10,10 +10,10 @@ import { AlunosModel } from "../../types/AlunosModel";
 import { ResultadosModel } from "../../types/ResultadosModel";
 import { CriteriosModel } from "../../types/CriteriosModel";
 
-export const Resultados = () => {
-    const formDataAluno: AlunosModel[] = [{ nome: "", sobreNome: "", cpf: "", sexo: "" }]
+const initialAlunosModel: AlunosModel[] = [{nome: '', sobreNome: '', cpf: '', sexo: '' }]
 
-    const [aluno, setaluno] = useState<AlunosModel[]>(formDataAluno);
+export const Resultados = () => {
+    const [aluno, setaluno] = useState(initialAlunosModel);
     const [listResultados, setlistResultados] = useState<ResultadosModel[]>([]);
     const [listCriterios, setlistCriterios] = useState<CriteriosModel[]>([]);
 
@@ -36,16 +36,11 @@ export const Resultados = () => {
 
     const buscaResultado = async (alunoSelect: AlunosModel) => {
         try {
-            const response = await axios.get<ResultadosModel[]>("/api/v1/Resultado/GetByAlunoId/" + alunoSelect.id);
-            const newlistResultado: ResultadosModel[] = response.data;
-            setlistResultados(newlistResultado);
+              await axios.get<ResultadosModel[]>("/api/v1/Resultado/GetByAlunoId/" + alunoSelect.id)
+              .then(resultado => setlistResultados(resultado.data));
 
-            const responseCriterio = await axios.get<CriteriosModel[]>("/api/v1/Criterio");
-            const newlistCriterios: CriteriosModel[] = responseCriterio.data;
-            setlistCriterios(newlistCriterios);
-
-            console.log(newlistCriterios)
-
+             await axios.get<CriteriosModel[]>("/api/v1/Criterio")
+             .then(criterios =>  setlistCriterios(criterios.data));
         } catch (error) {
             console.log(error);
             return error;
